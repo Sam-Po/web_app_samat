@@ -1,0 +1,92 @@
+{% extends 'www/base.html' %}
+{% block title %}index{% endblock %}
+{% block content %}
+<style>
+  body {
+   background-image: url("https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-zoom-virtual-background-_Tcjok-d9b4.jpg");
+  }
+
+.table {
+	width: 100%;
+	margin-bottom: 20px;
+	border: 1px solid #dddddd;
+	border-collapse: collapse;
+}
+.table th {
+	font-weight: bold;
+	padding: 5px;
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+.table td {
+	border: 1px solid #dddddd;
+	padding: 5px;
+}
+
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.header {
+  padding: 5px;
+  margin-bottom: 60px;
+  text-align: center;
+  background: #f44336;
+  color: white;
+  font-size: 26px;
+}
+.header img {
+    margin: auto 5px;
+    padding-bottom: 30px;
+    margin-bottom: 10px;
+    float: left;
+    width: 85px;
+    height: 85px;
+}
+
+</style>
+<div class="header">
+  <img src="https://st-1.akipress.org/st_all/bilim/9/1519540999.2.jpg" alt="logo"/>
+  <p style="margin-bottom: 10px;">ALA-TOO University</p>
+  <p style="font-size: 16px; margin: 0;">student contact information</p>
+</div>
+<table class="table">
+  <tr>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th></th>
+    <th></th>
+  </tr>
+  {% for person in contacts %}
+  <tr>
+    <td>{{ person.first_name }}</td>
+    <td>{{ person.last_name }}</td>
+    <td>{{ person.phone }}</td>
+    <td>{{ person.email }}</td>
+    <td>
+      <a href="{% url 'contact' person.id %}" class="button">Update</a>
+    </td>
+    <td>
+      <form action="{% url 'delete_contact' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="contact_id" value="{{ person.id }}">
+        <input type="submit" value="delete" class="button" style="background-color: #f44336;">
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table><br>
+<form action="{% url 'new_contact' %}">
+  {% csrf_token %}
+  <input type="submit" value="create new contact" class="button" style="float: right;">
+</form>
+{% endblock %}
